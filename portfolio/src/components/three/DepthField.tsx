@@ -3,6 +3,7 @@
 import { useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
+import { useTheme } from "next-themes";
 import * as THREE from "three";
 import { useThemeColor } from "@/lib/useThemeColor";
 
@@ -60,6 +61,16 @@ function NodeField({ pointerRef }: { pointerRef: React.RefObject<{ x: number; y:
   const sprite = useGlowSprite();
   const signalColor = useThemeColor("--signal", "#ff8b5e");
   const emberColor = useThemeColor("--ember", "#e0a458");
+  const { resolvedTheme } = useTheme();
+  const isLight = resolvedTheme === "light";
+  // Additive blending only reads as a glow against a dark canvas - on a
+  // light background it barely brightens already-light pixels, so the
+  // particles nearly vanish. Normal blending (a real composited, opaque-ish
+  // dot) is what actually shows up in light mode.
+  const pointBlending = isLight ? THREE.NormalBlending : THREE.AdditiveBlending;
+  const lineBlending = isLight ? THREE.NormalBlending : THREE.AdditiveBlending;
+  const pointOpacity = isLight ? 1 : 0.9;
+  const lineOpacity = isLight ? 0.4 : 0.16;
   const pointsRef = useRef<THREE.Points>(null);
   const linesRef = useRef<THREE.LineSegments>(null);
   const groupRef = useRef<THREE.Group>(null);
@@ -139,10 +150,10 @@ function NodeField({ pointerRef }: { pointerRef: React.RefObject<{ x: number; y:
           map={sprite}
           color={signalColor}
           transparent
-          opacity={0.9}
+          opacity={pointOpacity}
           sizeAttenuation
           depthWrite={false}
-          blending={THREE.AdditiveBlending}
+          blending={pointBlending}
         />
       </points>
       <lineSegments ref={linesRef} frustumCulled={false}>
@@ -155,9 +166,9 @@ function NodeField({ pointerRef }: { pointerRef: React.RefObject<{ x: number; y:
         <lineBasicMaterial
           color={emberColor}
           transparent
-          opacity={0.16}
+          opacity={lineOpacity}
           depthWrite={false}
-          blending={THREE.AdditiveBlending}
+          blending={lineBlending}
         />
       </lineSegments>
     </group>
@@ -179,6 +190,8 @@ function PointerTracker({ targetRef }: { targetRef: React.RefObject<{ x: number;
 export default function DepthField() {
   const pointerRef = useRef({ x: 0, y: 0 });
   const fogColor = useThemeColor("--background", "#161511");
+  const { resolvedTheme } = useTheme();
+  const isLight = resolvedTheme === "light";
 
   return (
     <Canvas
@@ -190,14 +203,19 @@ export default function DepthField() {
       <PointerTracker targetRef={pointerRef} />
       <NodeField pointerRef={pointerRef} />
       <fog attach="fog" args={[fogColor, 6, 15]} />
-      <EffectComposer>
-        <Bloom
-          intensity={0.55}
-          luminanceThreshold={0.15}
-          luminanceSmoothing={0.4}
-          mipmapBlur
-        />
-      </EffectComposer>
+      {/* Bloom simulates light spilling into a dark scene - on a light
+          background there's no dark canvas for it to spill into, so it just
+          washes out contrast instead of adding a glow. Skip it in light mode. */}
+      {!isLight && (
+        <EffectComposer>
+          <Bloom
+            intensity={0.55}
+            luminanceThreshold={0.15}
+            luminanceSmoothing={0.4}
+            mipmapBlur
+          />
+        </EffectComposer>
+      )}
     </Canvas>
   );
 }
