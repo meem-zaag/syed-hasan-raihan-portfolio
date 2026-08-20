@@ -6,6 +6,7 @@ import java.util.List;
 
 @ConfigurationProperties(prefix = "app.storage")
 public record StorageProperties(
+        String type,
         String basePath,
         String publicPath,
         long maxFileSizeBytes,

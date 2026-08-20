@@ -2,6 +2,7 @@ package com.syedhasanraihan.portfolio.storage;
 
 import com.syedhasanraihan.portfolio.common.BadRequestException;
 import com.syedhasanraihan.portfolio.config.StorageProperties;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,7 +13,13 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
+/**
+ * Default storage backend — used for local dev, and the fallback if {@code app.storage.type} is
+ * unset. Not suitable for hosts with an ephemeral filesystem (e.g. Render's free tier); use
+ * {@link R2StorageService} there via {@code STORAGE_TYPE=r2}.
+ */
 @Service
+@ConditionalOnProperty(prefix = "app.storage", name = "type", havingValue = "local", matchIfMissing = true)
 public class LocalDiskStorageService implements StorageService {
 
     private final StorageProperties storageProperties;

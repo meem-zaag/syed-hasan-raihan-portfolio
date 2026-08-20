@@ -19,6 +19,12 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        if (!"local".equalsIgnoreCase(storageProperties.type())) {
+            // Files live in R2 (or another remote backend) and are served from their own public URL —
+            // no local directory to expose.
+            return;
+        }
+
         Path baseDir = Path.of(storageProperties.basePath()).toAbsolutePath().normalize();
         try {
             Files.createDirectories(baseDir);
