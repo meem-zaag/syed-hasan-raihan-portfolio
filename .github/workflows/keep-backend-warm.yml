@@ -1,0 +1,15 @@
+name: Keep backend warm
+
+on:
+  schedule:
+    # Every 10 minutes - Render's free tier sleeps after 15 minutes idle.
+    - cron: "*/10 * * * *"
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping backend health endpoint
+        run: |
+          curl -fsS --max-time 90 https://portfolio-backend-68bh.onrender.com/api/public/health
