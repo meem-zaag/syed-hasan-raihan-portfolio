@@ -12,4 +12,4 @@ jobs:
     steps:
       - name: Ping backend health endpoint
         run: |
-          curl -fsS --max-time 90 https://portfolio-backend-68bh.onrender.com/api/public/health
+          curl -fsS --max-time 120 --retry 2 --retry-delay 5 https://portfolio-backend-68bh.onrender.com/api/public/health
