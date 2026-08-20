@@ -52,41 +52,41 @@ export default async function ProjectDetailPage({
       <Reveal>
         <Link
           href="/projects"
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          className="inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-wide text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft size={14} /> All projects
         </Link>
       </Reveal>
 
       <Reveal delay={0.05} className="mt-6">
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 font-mono text-xs">
           {project.category && (
-            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-muted-foreground">
+            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-muted-foreground">
               {project.category}
             </span>
           )}
           {project.status === "IN_PROGRESS" && (
-            <span className="rounded-full bg-amber-400/90 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-black">
+            <span className="rounded-full bg-ember px-3 py-1 font-semibold uppercase tracking-wide text-background">
               In progress
             </span>
           )}
         </div>
-        <h1 className="mt-4 font-heading text-3xl font-bold tracking-tight sm:text-4xl">
+        <h1 className="font-display mt-4 text-4xl font-medium tracking-tight text-balance sm:text-5xl">
           {project.title}
         </h1>
         {project.summary && (
           <p className="mt-4 max-w-2xl text-base text-muted-foreground">{project.summary}</p>
         )}
 
-        <div className="mt-6 flex flex-wrap items-center gap-5 text-sm text-muted-foreground">
+        <div className="mt-6 flex flex-wrap items-center gap-5 font-mono text-xs text-muted-foreground">
           {project.clientName && (
             <span className="flex items-center gap-1.5">
-              <Briefcase size={14} /> {project.clientName}
+              <Briefcase size={13} /> {project.clientName}
             </span>
           )}
           {(project.startDate || project.endDate) && (
             <span className="flex items-center gap-1.5">
-              <Calendar size={14} /> {formatDate(project.startDate)} —{" "}
+              <Calendar size={13} /> {formatDate(project.startDate)} —{" "}
               {formatDate(project.endDate)}
             </span>
           )}
@@ -98,7 +98,7 @@ export default async function ProjectDetailPage({
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+              className="inline-flex items-center gap-2 rounded-full bg-signal px-5 py-2.5 text-sm font-medium text-signal-foreground transition-opacity hover:opacity-90"
             >
               <ExternalLink size={15} /> Live site
             </a>
@@ -117,27 +117,40 @@ export default async function ProjectDetailPage({
       </Reveal>
 
       {cover && (
-        <Reveal delay={0.1} className="relative mt-12 aspect-video w-full overflow-hidden rounded-2xl border border-white/10">
-          <Image src={cover.url} alt={cover.altText ?? project.title} fill sizes="800px" className="object-cover" priority />
+        <Reveal
+          delay={0.1}
+          className="relative mt-12 aspect-video w-full overflow-hidden rounded-2xl border border-white/10"
+        >
+          <Image
+            src={cover.url}
+            alt={cover.altText ?? project.title}
+            fill
+            sizes="800px"
+            className="object-cover"
+            priority
+          />
         </Reveal>
       )}
 
       {project.description && (
         <Reveal delay={0.15} className="mt-10 space-y-4">
-          {project.description.split("\n").filter(Boolean).map((p, i) => (
-            <p key={i} className="text-base leading-relaxed text-muted-foreground">
-              {p}
-            </p>
-          ))}
+          {project.description
+            .split("\n")
+            .filter(Boolean)
+            .map((p, i) => (
+              <p key={i} className="text-base leading-relaxed text-muted-foreground">
+                {p}
+              </p>
+            ))}
         </Reveal>
       )}
 
       {project.techStack.length > 0 && (
         <Reveal delay={0.2} className="mt-10">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-foreground/80">
+          <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-foreground/70">
             Tech stack
           </h2>
-          <div className="mt-3 flex flex-wrap gap-2">
+          <div className="mt-3 flex flex-wrap gap-2 font-mono">
             {project.techStack.map((tag) => (
               <span
                 key={tag}

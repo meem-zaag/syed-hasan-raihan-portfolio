@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
+import { Geist, Geist_Mono, Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -17,8 +17,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
   subsets: ["latin"],
 });
 
@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
     "Portfolio of Syed Hasan Raihan, a software engineer specializing in React, Next.js, and performance-driven UI engineering.";
 
   return {
-    title: { default: title, template: `%s | ${title}` },
+    title: { default: title, template: `%s · ${title}` },
     description,
     openGraph: { title, description, type: "website" },
     twitter: { card: "summary_large_image", title, description },
@@ -47,9 +47,9 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark ${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} h-full antialiased`}
+      className={`dark ${geistSans.variable} ${geistMono.variable} ${bricolage.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-background text-foreground">
+      <body className="bg-noise flex min-h-full flex-col bg-background text-foreground">
         <Navbar fullName={profile?.fullName ?? "Portfolio"} />
         <main className="flex-1 pt-16">{children}</main>
         <Footer profile={profile} />

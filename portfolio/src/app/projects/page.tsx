@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { getPage, getProjects } from "@/lib/api";
-import { SectionHeading } from "@/components/SectionHeading";
-import { ProjectsGrid } from "@/components/sections/ProjectsGrid";
+import { IndexHeading } from "@/components/IndexHeading";
+import { Reveal } from "@/components/Reveal";
+import { ProjectCard } from "@/components/ProjectCard";
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage("projects").catch(() => null);
@@ -24,8 +25,19 @@ export default async function ProjectsPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-24">
-      <SectionHeading eyebrow="Portfolio" title={heading} description={description} />
-      <ProjectsGrid projects={projects} />
+      <IndexHeading index="02" eyebrow="Portfolio" title={heading} description={description} />
+
+      {projects.length === 0 ? (
+        <p className="mt-16 text-sm text-muted-foreground">Projects coming soon.</p>
+      ) : (
+        <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {projects.map((project, i) => (
+            <Reveal key={project.id} delay={i * 0.05}>
+              <ProjectCard project={project} index={i} />
+            </Reveal>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { GraduationCap } from "lucide-react";
 import { getEducation, getPage } from "@/lib/api";
-import { SectionHeading } from "@/components/SectionHeading";
+import { IndexHeading } from "@/components/IndexHeading";
 import { Reveal } from "@/components/Reveal";
 import type { Education } from "@/lib/types";
 
@@ -31,29 +31,29 @@ export default async function EducationPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-24">
-      <SectionHeading eyebrow="Background" title={heading} description={description} />
+      <IndexHeading index="04" eyebrow="Background" title={heading} description={description} />
 
-      <div className="mt-12 space-y-5">
+      <div className="mt-16 space-y-4">
         {education.length === 0 && (
           <p className="text-sm text-muted-foreground">Education details coming soon.</p>
         )}
         {education.map((edu, i) => (
           <Reveal key={edu.id} delay={i * 0.06}>
             <div className="flex gap-4 rounded-2xl border border-white/10 bg-card/60 p-6">
-              <div className="flex size-11 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-primary">
+              <div className="flex size-11 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-signal">
                 <GraduationCap size={20} />
               </div>
               <div>
                 <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                  <h3 className="font-heading text-lg font-semibold text-foreground">
+                  <h3 className="font-display text-lg font-medium text-foreground">
                     {edu.institution}
                   </h3>
-                  <span className="text-xs text-muted-foreground">
+                  <span className="font-mono text-xs text-muted-foreground">
                     {formatDate(edu.startDate, edu.datePrecision)} —{" "}
                     {formatDate(edu.endDate, edu.datePrecision)}
                   </span>
                 </div>
-                <p className="mt-1 text-sm text-primary">
+                <p className="mt-1 text-sm text-signal">
                   {edu.degree}
                   {edu.field ? `, ${edu.field}` : ""}
                 </p>

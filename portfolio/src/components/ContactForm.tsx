@@ -8,7 +8,7 @@ import { submitContactMessage } from "@/lib/api";
 type Status = "idle" | "submitting" | "success" | "error";
 
 const inputClass =
-  "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition-colors focus:border-primary/50 focus:bg-white/[0.07]";
+  "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none transition-colors focus:border-signal/50 focus:bg-white/[0.07]";
 
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
@@ -50,18 +50,18 @@ export function ContactForm() {
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-emerald-400/20 bg-emerald-400/5 px-6 py-16 text-center"
+        className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-signal/20 bg-signal/5 px-6 py-16 text-center"
       >
-        <CheckCircle2 className="text-emerald-400" size={36} />
-        <h3 className="font-heading text-lg font-semibold text-foreground">
-          Message sent!
+        <CheckCircle2 className="text-signal" size={36} />
+        <h3 className="font-display text-lg font-medium text-foreground">
+          Message sent
         </h3>
         <p className="max-w-sm text-sm text-muted-foreground">
           Thanks for reaching out — I&apos;ll get back to you as soon as I can.
         </p>
         <button
           onClick={() => setStatus("idle")}
-          className="mt-2 text-sm font-medium text-primary hover:underline"
+          className="mt-2 font-mono text-xs uppercase tracking-wide text-signal hover:underline"
         >
           Send another message
         </button>
@@ -73,16 +73,22 @@ export function ContactForm() {
     <form onSubmit={handleSubmit} noValidate className="space-y-5">
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div>
-          <label htmlFor="name" className="mb-1.5 block text-sm text-foreground">
+          <label
+            htmlFor="name"
+            className="mb-1.5 block font-mono text-[11px] uppercase tracking-wide text-muted-foreground"
+          >
             Name
           </label>
           <input id="name" name="name" type="text" className={inputClass} placeholder="Jane Doe" />
           {fieldErrors.name && (
-            <p className="mt-1.5 text-xs text-red-400">{fieldErrors.name}</p>
+            <p className="mt-1.5 text-xs text-destructive">{fieldErrors.name}</p>
           )}
         </div>
         <div>
-          <label htmlFor="email" className="mb-1.5 block text-sm text-foreground">
+          <label
+            htmlFor="email"
+            className="mb-1.5 block font-mono text-[11px] uppercase tracking-wide text-muted-foreground"
+          >
             Email
           </label>
           <input
@@ -93,14 +99,17 @@ export function ContactForm() {
             placeholder="jane@example.com"
           />
           {fieldErrors.email && (
-            <p className="mt-1.5 text-xs text-red-400">{fieldErrors.email}</p>
+            <p className="mt-1.5 text-xs text-destructive">{fieldErrors.email}</p>
           )}
         </div>
       </div>
 
       <div>
-        <label htmlFor="subject" className="mb-1.5 block text-sm text-foreground">
-          Subject <span className="text-muted-foreground">(optional)</span>
+        <label
+          htmlFor="subject"
+          className="mb-1.5 block font-mono text-[11px] uppercase tracking-wide text-muted-foreground"
+        >
+          Subject <span className="normal-case text-muted-foreground/60">(optional)</span>
         </label>
         <input
           id="subject"
@@ -112,7 +121,10 @@ export function ContactForm() {
       </div>
 
       <div>
-        <label htmlFor="message" className="mb-1.5 block text-sm text-foreground">
+        <label
+          htmlFor="message"
+          className="mb-1.5 block font-mono text-[11px] uppercase tracking-wide text-muted-foreground"
+        >
           Message
         </label>
         <textarea
@@ -123,7 +135,7 @@ export function ContactForm() {
           placeholder="Tell me a bit about your project or idea..."
         />
         {fieldErrors.message && (
-          <p className="mt-1.5 text-xs text-red-400">{fieldErrors.message}</p>
+          <p className="mt-1.5 text-xs text-destructive">{fieldErrors.message}</p>
         )}
       </div>
 
@@ -133,7 +145,7 @@ export function ContactForm() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="flex items-start gap-2 rounded-xl border border-red-400/20 bg-red-400/5 px-4 py-3 text-sm text-red-300"
+            className="flex items-start gap-2 rounded-xl border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-destructive"
           >
             <AlertCircle size={16} className="mt-0.5 shrink-0" />
             {errorMessage}
@@ -144,7 +156,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-brand-from to-brand-to px-6 py-3.5 text-sm font-medium text-white transition-transform hover:scale-[1.01] disabled:opacity-60 sm:w-auto"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-signal px-6 py-3.5 text-sm font-medium text-signal-foreground transition-transform hover:scale-[1.01] disabled:opacity-60 sm:w-auto"
       >
         {status === "submitting" ? (
           <>

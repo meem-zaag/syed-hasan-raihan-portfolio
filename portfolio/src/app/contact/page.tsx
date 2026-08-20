@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { getPage, getProfile } from "@/lib/api";
-import { SectionHeading } from "@/components/SectionHeading";
+import { IndexHeading } from "@/components/IndexHeading";
 import { Reveal } from "@/components/Reveal";
 import { ContactForm } from "@/components/ContactForm";
 
@@ -32,14 +32,14 @@ export default async function ContactPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-24">
-      <SectionHeading eyebrow="Contact" title={heading} description={description} />
+      <IndexHeading index="06" eyebrow="Contact" title={heading} description={description} />
 
-      <div className="mt-14 grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.3fr]">
+      <div className="mt-16 grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.3fr]">
         <Reveal delay={0.1} className="space-y-4">
           {contacts.map((c) => {
             const Content = (
               <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-card/60 px-4 py-3.5">
-                <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-signal/15 text-signal">
                   <c.icon size={16} />
                 </span>
                 <span className="text-sm text-foreground">{c.label}</span>

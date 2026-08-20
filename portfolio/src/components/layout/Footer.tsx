@@ -26,9 +26,9 @@ export function Footer({ profile }: { profile: Profile | null }) {
 
   return (
     <footer className="border-t border-white/10">
-      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-12 sm:flex-row sm:items-start sm:justify-between">
+      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-14 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <p className="font-heading text-lg font-semibold text-foreground">
+          <p className="font-display text-lg font-medium text-foreground">
             {profile?.fullName ?? "Portfolio"}
           </p>
           {profile?.tagline && (
@@ -45,7 +45,7 @@ export function Footer({ profile }: { profile: Profile | null }) {
                   target={href.startsWith("http") ? "_blank" : undefined}
                   rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
                   aria-label={label}
-                  className="flex size-9 items-center justify-center rounded-full border border-white/10 text-muted-foreground transition-colors hover:border-white/20 hover:text-foreground"
+                  className="flex size-9 items-center justify-center rounded-full border border-white/10 text-muted-foreground transition-colors hover:border-signal/40 hover:text-signal"
                 >
                   <Icon size={16} />
                 </a>
@@ -55,7 +55,7 @@ export function Footer({ profile }: { profile: Profile | null }) {
         </div>
 
         <nav aria-label="Footer">
-          <ul className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm sm:flex sm:flex-col">
+          <ul className="grid grid-cols-2 gap-x-8 gap-y-2 font-mono text-xs uppercase tracking-wide sm:flex sm:flex-col">
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
                 <Link
@@ -71,9 +71,8 @@ export function Footer({ profile }: { profile: Profile | null }) {
       </div>
 
       <div className="border-t border-white/10 px-6 py-6">
-        <p className="mx-auto max-w-6xl text-xs text-muted-foreground">
-          © {year} {profile?.fullName ?? "Portfolio"}. Built with Next.js, Tailwind CSS &
-          Framer Motion.
+        <p className="mx-auto max-w-6xl font-mono text-[11px] text-muted-foreground">
+          © {year} {profile?.fullName ?? "Portfolio"}
         </p>
       </div>
     </footer>
