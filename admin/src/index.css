@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f5f6fa;
+}
+
+/* react-quill-new dark-on-light toolbar tweak so it doesn't clash with antd form fields */
+.ql-toolbar.ql-snow {
+  border-radius: 8px 8px 0 0;
+  background: #fafafa;
+}
+.ql-container.ql-snow {
+  border-radius: 0 0 8px 8px;
+  min-height: 140px;
+  font-size: 14px;
+}
+
+.route-fade-enter {
+  opacity: 0;
+  transform: translateY(6px);
+}
+.route-fade-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
