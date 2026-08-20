@@ -1,0 +1,31 @@
+# Backend (Maven / Spring Boot)
+backend/target/
+backend/uploads/
+backend/.env
+backend/*.log
+backend/HELP.md
+
+# Admin (Vite / React)
+admin/node_modules/
+admin/dist/
+admin/.env
+admin/.env.local
+admin/*.log
+
+# Portfolio (Next.js) - future
+portfolio/node_modules/
+portfolio/.next/
+portfolio/.env
+portfolio/.env.local
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Docker
+.env
+
+# Local tooling
+.claude/
