@@ -8,7 +8,7 @@ import { submitContactMessage } from "@/lib/api";
 type Status = "idle" | "submitting" | "success" | "error";
 
 const inputClass =
-  "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none transition-colors focus:border-signal/50 focus:bg-white/[0.07]";
+  "w-full rounded-xl border border-foreground/10 bg-foreground/5 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none transition-colors focus:border-signal/50 focus:bg-white/[0.07]";
 
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");

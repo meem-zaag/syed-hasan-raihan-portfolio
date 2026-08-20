@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -36,7 +37,7 @@ export function Navbar({ fullName }: { fullName: string }) {
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-colors duration-300",
         scrolled || open
-          ? "border-b border-white/10 bg-background/85 backdrop-blur-md"
+          ? "border-b border-foreground/10 bg-background/85 backdrop-blur-md"
           : "border-b border-transparent bg-transparent"
       )}
     >
@@ -67,7 +68,7 @@ export function Navbar({ fullName }: { fullName: string }) {
                   {active && (
                     <motion.span
                       layoutId="nav-pill"
-                      className="absolute inset-0 rounded-full bg-white/10"
+                      className="absolute inset-0 rounded-full bg-foreground/10"
                       transition={{ type: "spring", stiffness: 400, damping: 32 }}
                     />
                   )}
@@ -78,21 +79,27 @@ export function Navbar({ fullName }: { fullName: string }) {
           })}
         </ul>
 
-        <Link
-          href="/contact"
-          className="hidden rounded-full bg-signal px-4 py-2 font-mono text-xs uppercase tracking-wide text-signal-foreground transition-opacity hover:opacity-90 md:inline-block"
-        >
-          Let&apos;s talk
-        </Link>
+        <div className="hidden items-center gap-3 md:flex">
+          <ThemeToggle />
+          <Link
+            href="/contact"
+            className="rounded-full bg-signal px-4 py-2 font-mono text-xs uppercase tracking-wide text-signal-foreground transition-opacity hover:opacity-90"
+          >
+            Let&apos;s talk
+          </Link>
+        </div>
 
-        <button
-          type="button"
-          aria-label={open ? "Close menu" : "Open menu"}
-          onClick={() => setOpen((v) => !v)}
-          className="inline-flex items-center justify-center rounded-full p-2 text-foreground md:hidden"
-        >
-          {open ? <X size={20} /> : <Menu size={20} />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle />
+          <button
+            type="button"
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen((v) => !v)}
+            className="inline-flex items-center justify-center rounded-full p-2 text-foreground"
+          >
+            {open ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </nav>
 
       <AnimatePresence>
@@ -102,7 +109,7 @@ export function Navbar({ fullName }: { fullName: string }) {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="overflow-hidden border-t border-white/10 bg-background/95 backdrop-blur-md md:hidden"
+            className="overflow-hidden border-t border-foreground/10 bg-background/95 backdrop-blur-md md:hidden"
           >
             <ul className="flex flex-col gap-1 px-6 py-4">
               {NAV_LINKS.map((link) => {
@@ -116,8 +123,8 @@ export function Navbar({ fullName }: { fullName: string }) {
                       className={cn(
                         "block rounded-lg px-3 py-2.5 font-mono text-xs uppercase tracking-wide",
                         active
-                          ? "bg-white/10 text-foreground"
-                          : "text-muted-foreground hover:bg-white/5 hover:text-foreground"
+                          ? "bg-foreground/10 text-foreground"
+                          : "text-muted-foreground hover:bg-foreground/5 hover:text-foreground"
                       )}
                     >
                       {link.label}

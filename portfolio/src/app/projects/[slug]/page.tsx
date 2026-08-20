@@ -61,7 +61,7 @@ export default async function ProjectDetailPage({
       <Reveal delay={0.05} className="mt-6">
         <div className="flex flex-wrap items-center gap-2 font-mono text-xs">
           {project.category && (
-            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-muted-foreground">
+            <span className="rounded-full border border-foreground/10 bg-foreground/5 px-3 py-1 text-muted-foreground">
               {project.category}
             </span>
           )}
@@ -108,7 +108,7 @@ export default async function ProjectDetailPage({
               href={project.repoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-white/5"
+              className="inline-flex items-center gap-2 rounded-full border border-foreground/15 px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-foreground/5"
             >
               <GithubIcon size={15} /> Source
             </a>
@@ -119,7 +119,7 @@ export default async function ProjectDetailPage({
       {cover && (
         <Reveal
           delay={0.1}
-          className="relative mt-12 aspect-video w-full overflow-hidden rounded-2xl border border-white/10"
+          className="relative mt-12 aspect-video w-full overflow-hidden rounded-2xl border border-foreground/10"
         >
           <Image
             src={cover.url}
@@ -154,7 +154,7 @@ export default async function ProjectDetailPage({
             {project.techStack.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-muted-foreground"
+                className="rounded-full border border-foreground/10 bg-foreground/5 px-3 py-1 text-xs text-muted-foreground"
               >
                 {tag}
               </span>
@@ -168,7 +168,7 @@ export default async function ProjectDetailPage({
           {gallery.map((img) => (
             <div
               key={img.id}
-              className="relative aspect-video overflow-hidden rounded-xl border border-white/10"
+              className="relative aspect-video overflow-hidden rounded-xl border border-foreground/10"
             >
               <Image
                 src={img.media.url}

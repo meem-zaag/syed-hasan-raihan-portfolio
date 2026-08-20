@@ -26,7 +26,7 @@ export function HeroSection({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mb-8 inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-card/60 px-3.5 py-1.5 font-mono text-xs text-muted-foreground backdrop-blur"
+          className="mb-8 inline-flex w-fit items-center gap-2 rounded-full border border-foreground/10 bg-card/60 px-3.5 py-1.5 font-mono text-xs text-muted-foreground backdrop-blur"
         >
           <span className="relative flex size-1.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal opacity-75" />
@@ -84,7 +84,7 @@ export function HeroSection({
           </Link>
           <Link
             href="/contact"
-            className="rounded-full border border-white/15 px-6 py-3.5 text-sm font-medium text-foreground transition-colors hover:border-white/30"
+            className="rounded-full border border-foreground/15 px-6 py-3.5 text-sm font-medium text-foreground transition-colors hover:border-foreground/30"
           >
             Get in touch
           </Link>

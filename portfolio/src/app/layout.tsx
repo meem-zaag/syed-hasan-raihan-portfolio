@@ -4,6 +4,8 @@ import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { getProfile, getSettings } from "@/lib/api";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 
 export const maxDuration = 60;
 
@@ -47,12 +49,17 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark ${geistSans.variable} ${geistMono.variable} ${bricolage.variable} h-full antialiased`}
+      suppressHydrationWarning
+      className={`${geistSans.variable} ${geistMono.variable} ${bricolage.variable} h-full antialiased`}
     >
       <body className="bg-noise flex min-h-full flex-col bg-background text-foreground">
-        <Navbar fullName={profile?.fullName ?? "Portfolio"} />
-        <main className="flex-1 pt-16">{children}</main>
-        <Footer profile={profile} />
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+          <SmoothScrollProvider>
+            <Navbar fullName={profile?.fullName ?? "Portfolio"} />
+            <main className="flex-1 pt-16">{children}</main>
+            <Footer profile={profile} />
+          </SmoothScrollProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -50,7 +50,7 @@ export function SpatialIndex() {
           <span className="font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground">
             Index
           </span>
-          <div className="h-px flex-1 bg-white/10" />
+          <div className="h-px flex-1 bg-foreground/10" />
         </Reveal>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -59,7 +59,7 @@ export function SpatialIndex() {
               <Link href={tile.href} className="group block h-full">
                 <TiltCard
                   maxTilt={6}
-                  className="flex h-full flex-col justify-between gap-8 rounded-2xl border border-white/10 bg-card/60 p-6 transition-colors group-hover:border-signal/40"
+                  className="flex h-full flex-col justify-between gap-8 rounded-2xl border border-foreground/10 bg-card/60 p-6 transition-colors group-hover:border-signal/40"
                 >
                   <div className="flex items-start justify-between">
                     <span className="font-mono text-xs text-signal">{tile.index}</span>

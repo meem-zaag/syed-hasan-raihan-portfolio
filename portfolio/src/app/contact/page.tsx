@@ -38,7 +38,7 @@ export default async function ContactPage() {
         <Reveal delay={0.1} className="space-y-4">
           {contacts.map((c) => {
             const Content = (
-              <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-card/60 px-4 py-3.5">
+              <div className="flex items-center gap-3 rounded-xl border border-foreground/10 bg-card/60 px-4 py-3.5">
                 <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-signal/15 text-signal">
                   <c.icon size={16} />
                 </span>

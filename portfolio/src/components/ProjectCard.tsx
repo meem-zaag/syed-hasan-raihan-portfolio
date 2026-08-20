@@ -12,7 +12,7 @@ export function ProjectCard({ project, index }: { project: Project; index?: numb
     <Link href={`/projects/${project.slug}`} className="group block">
       <TiltCard
         maxTilt={7}
-        className="flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-card/70"
+        className="flex h-full flex-col overflow-hidden rounded-2xl border border-foreground/10 bg-card/70"
       >
         <div className="relative aspect-[16/10] w-full overflow-hidden bg-secondary">
           {cover ? (
@@ -31,7 +31,7 @@ export function ProjectCard({ project, index }: { project: Project; index?: numb
             </div>
           )}
           {typeof index === "number" && (
-            <span className="absolute left-3 top-3 rounded-full border border-white/15 bg-background/60 px-2 py-0.5 font-mono text-[11px] text-muted-foreground backdrop-blur">
+            <span className="absolute left-3 top-3 rounded-full border border-foreground/15 bg-background/60 px-2 py-0.5 font-mono text-[11px] text-muted-foreground backdrop-blur">
               {String(index + 1).padStart(2, "0")}
             </span>
           )}
@@ -60,7 +60,7 @@ export function ProjectCard({ project, index }: { project: Project; index?: numb
               {project.techStack.slice(0, 4).map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-[10px] text-muted-foreground"
+                  className="rounded-full border border-foreground/10 bg-foreground/5 px-2.5 py-0.5 text-[10px] text-muted-foreground"
                 >
                   {tag}
                 </span>

@@ -31,7 +31,7 @@ export function SkillConstellation({ categories }: { categories: SkillCategory[]
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ duration: 0.35, delay: si * 0.03 }}
                 whileHover={{ y: -3, borderColor: "var(--signal)" }}
-                className={`rounded-full border border-white/10 bg-card/70 font-mono text-foreground transition-colors ${sizeForProficiency(
+                className={`rounded-full border border-foreground/10 bg-card/70 font-mono text-foreground transition-colors ${sizeForProficiency(
                   skill.proficiency
                 )}`}
                 style={{ opacity: 0.55 + (skill.proficiency / 100) * 0.45 }}

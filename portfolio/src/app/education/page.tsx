@@ -39,8 +39,8 @@ export default async function EducationPage() {
         )}
         {education.map((edu, i) => (
           <Reveal key={edu.id} delay={i * 0.06}>
-            <div className="flex gap-4 rounded-2xl border border-white/10 bg-card/60 p-6">
-              <div className="flex size-11 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-signal">
+            <div className="flex gap-4 rounded-2xl border border-foreground/10 bg-card/60 p-6">
+              <div className="flex size-11 shrink-0 items-center justify-center rounded-lg border border-foreground/10 bg-foreground/5 text-signal">
                 <GraduationCap size={20} />
               </div>
               <div>

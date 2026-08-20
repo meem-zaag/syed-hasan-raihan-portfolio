@@ -53,7 +53,7 @@ export default async function AboutPage() {
 
       <div className="mt-16 grid grid-cols-1 gap-12 lg:grid-cols-[300px_1fr]">
         <Reveal delay={0.1}>
-          <TiltCard maxTilt={5} className="rounded-2xl border border-white/10 bg-card/70 p-6">
+          <TiltCard maxTilt={5} className="rounded-2xl border border-foreground/10 bg-card/70 p-6">
             {profile?.avatar?.url ? (
               <div className="relative aspect-square w-full overflow-hidden rounded-xl">
                 <Image
@@ -72,7 +72,7 @@ export default async function AboutPage() {
               </div>
             )}
 
-            <div className="mt-6 space-y-4 border-t border-white/10 pt-5">
+            <div className="mt-6 space-y-4 border-t border-foreground/10 pt-5">
               {facts.map((fact) => (
                 <div key={fact.label} className="flex items-start gap-3">
                   <fact.icon size={15} className="mt-0.5 shrink-0 text-signal" />

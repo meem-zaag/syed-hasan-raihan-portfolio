@@ -20,7 +20,7 @@ export function DepthFieldCanvas() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(60% 50% at 50% 40%, oklch(0.89 0.235 129 / 14%), transparent 70%)",
+            "radial-gradient(60% 50% at 50% 40%, var(--signal-glow), transparent 70%)",
         }}
       />
     );

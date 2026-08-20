@@ -25,7 +25,7 @@ export function Footer({ profile }: { profile: Profile | null }) {
   ].filter(Boolean) as { href: string; label: string; icon: typeof Globe }[];
 
   return (
-    <footer className="border-t border-white/10">
+    <footer className="border-t border-foreground/10">
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-14 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <p className="font-display text-lg font-medium text-foreground">
@@ -45,7 +45,7 @@ export function Footer({ profile }: { profile: Profile | null }) {
                   target={href.startsWith("http") ? "_blank" : undefined}
                   rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
                   aria-label={label}
-                  className="flex size-9 items-center justify-center rounded-full border border-white/10 text-muted-foreground transition-colors hover:border-signal/40 hover:text-signal"
+                  className="flex size-9 items-center justify-center rounded-full border border-foreground/10 text-muted-foreground transition-colors hover:border-signal/40 hover:text-signal"
                 >
                   <Icon size={16} />
                 </a>
@@ -70,7 +70,7 @@ export function Footer({ profile }: { profile: Profile | null }) {
         </nav>
       </div>
 
-      <div className="border-t border-white/10 px-6 py-6">
+      <div className="border-t border-foreground/10 px-6 py-6">
         <p className="mx-auto max-w-6xl font-mono text-[11px] text-muted-foreground">
           © {year} {profile?.fullName ?? "Portfolio"}
         </p>
