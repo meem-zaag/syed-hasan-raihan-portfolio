@@ -163,6 +163,47 @@
   .perspective-container {
     perspective: 1200px;
   }
+
+  /* Structural spacing/typography for admin-authored rich text (Quill HTML)
+     rendered via dangerouslySetInnerHTML - color/size come from whatever
+     text-* classes the call site adds alongside this one. */
+  .rich-text > * + * {
+    margin-top: 1em;
+  }
+  .rich-text h2,
+  .rich-text h3 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    color: var(--foreground);
+  }
+  .rich-text h2 {
+    font-size: 1.375em;
+  }
+  .rich-text h3 {
+    font-size: 1.125em;
+  }
+  .rich-text ul,
+  .rich-text ol {
+    padding-left: 1.25em;
+  }
+  .rich-text ul {
+    list-style: disc;
+  }
+  .rich-text ol {
+    list-style: decimal;
+  }
+  .rich-text li + li {
+    margin-top: 0.35em;
+  }
+  .rich-text a {
+    color: var(--signal);
+    text-underline-offset: 2px;
+    text-decoration: underline;
+  }
+  .rich-text strong {
+    font-weight: 600;
+    color: var(--foreground);
+  }
 }
 
 ::selection {

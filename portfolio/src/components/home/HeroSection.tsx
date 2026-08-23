@@ -56,14 +56,15 @@ export function HeroSection({
         )}
 
         {description && (
-          <motion.p
+          <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="mt-4 max-w-lg text-base leading-relaxed text-muted-foreground"
-          >
-            {description}
-          </motion.p>
+            className="rich-text mt-4 max-w-lg text-base leading-relaxed text-muted-foreground"
+            // `description` is sanitized server-side in app/page.tsx before
+            // it reaches this client component - see lib/sanitize.ts.
+            dangerouslySetInnerHTML={{ __html: description }}
+          />
         )}
 
         <motion.div

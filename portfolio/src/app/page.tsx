@@ -1,4 +1,5 @@
 import { getPage, getProfile, getExperience, findSection } from "@/lib/api";
+import { sanitizeRichText } from "@/lib/sanitize";
 import { HeroSection } from "@/components/home/HeroSection";
 import { SignalStrip } from "@/components/home/SignalStrip";
 import { SpatialIndex } from "@/components/home/SpatialIndex";
@@ -15,7 +16,7 @@ export default async function HomePage() {
   const hero = findSection(home, "hero");
   const heading = hero?.heading ?? profile?.fullName ?? "Welcome";
   const subheading = hero?.subheading ?? profile?.title ?? null;
-  const description = hero?.description ?? profile?.tagline ?? null;
+  const description = sanitizeRichText(hero?.description ?? profile?.tagline ?? null);
 
   const currentRole = experience.find((e) => !e.endDate);
   const earliestStart = experience[experience.length - 1]?.startDate;

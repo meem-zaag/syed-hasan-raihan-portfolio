@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { MapPin, Mail, Briefcase, GraduationCap } from "lucide-react";
 import { getPage, getProfile, getExperience, findSection } from "@/lib/api";
+import { sanitizeRichText } from "@/lib/sanitize";
 import { IndexHeading } from "@/components/IndexHeading";
 import { Reveal } from "@/components/Reveal";
 import { TiltCard } from "@/components/TiltCard";
@@ -25,10 +26,7 @@ export default async function AboutPage() {
 
   const intro = findSection(page, "intro") ?? page?.sections[0] ?? null;
   const heading = intro?.heading ?? "About me";
-  const paragraphs = (intro?.description ?? profile?.bio ?? "")
-    .split("\n")
-    .map((p) => p.trim())
-    .filter(Boolean);
+  const bio = sanitizeRichText(intro?.description ?? profile?.bio ?? null);
 
   const currentRole = experience.find((e) => !e.endDate);
   const earliestStart = experience[experience.length - 1]?.startDate;
@@ -89,21 +87,11 @@ export default async function AboutPage() {
         </Reveal>
 
         <Reveal delay={0.2} className="flex flex-col justify-center">
-          {paragraphs.length > 0 ? (
-            <div className="space-y-6">
-              {paragraphs.map((p, i) => (
-                <p
-                  key={i}
-                  className={
-                    i === 0
-                      ? "font-display text-2xl font-medium leading-snug text-balance text-foreground sm:text-3xl"
-                      : "text-base leading-relaxed text-muted-foreground"
-                  }
-                >
-                  {p}
-                </p>
-              ))}
-            </div>
+          {bio ? (
+            <div
+              className="rich-text [&>p:first-child]:font-display [&>p:first-child]:text-2xl [&>p:first-child]:font-medium [&>p:first-child]:leading-snug [&>p:first-child]:text-balance [&>p:first-child]:text-foreground [&>p]:text-base [&>p]:leading-relaxed [&>p]:text-muted-foreground sm:[&>p:first-child]:text-3xl"
+              dangerouslySetInnerHTML={{ __html: bio }}
+            />
           ) : (
             <p className="text-base text-muted-foreground">More about me is coming soon.</p>
           )}

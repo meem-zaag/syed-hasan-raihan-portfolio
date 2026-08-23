@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink, Calendar, Briefcase } from "lucide-react";
 import { GithubIcon } from "@/components/icons/BrandIcons";
 import { getProject } from "@/lib/api";
+import { sanitizeRichText } from "@/lib/sanitize";
 import { Reveal } from "@/components/Reveal";
 
 async function loadProject(slug: string) {
@@ -132,18 +133,19 @@ export default async function ProjectDetailPage({
         </Reveal>
       )}
 
-      {project.description && (
-        <Reveal delay={0.15} className="mt-10 space-y-4">
-          {project.description
-            .split("\n")
-            .filter(Boolean)
-            .map((p, i) => (
-              <p key={i} className="text-base leading-relaxed text-muted-foreground">
-                {p}
-              </p>
-            ))}
-        </Reveal>
-      )}
+      {(() => {
+        const description = sanitizeRichText(project.description);
+        return (
+          description && (
+            <Reveal delay={0.15} className="mt-10">
+              <div
+                className="rich-text [&>p]:text-base [&>p]:leading-relaxed [&>p]:text-muted-foreground"
+                dangerouslySetInnerHTML={{ __html: description }}
+              />
+            </Reveal>
+          )
+        );
+      })()}
 
       {project.techStack.length > 0 && (
         <Reveal delay={0.2} className="mt-10">
