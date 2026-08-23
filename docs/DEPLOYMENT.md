@@ -20,8 +20,9 @@ GitHub (public repo, meem-zaag/syed-hasan-raihan-portfolio)
   │
   └─ portfolio/  ──manual deploy─▶ Vercel (Hobby, free tier)     portfolio-syed-hasan-raihan.vercel.app
 
-GitHub Actions (in the same repo) pings the Render backend every 10 minutes so it doesn't
-cold-sleep — see "Why the repo is public" below.
+A cron-job.org cronjob pings the Render backend every 5 minutes so it doesn't cold-sleep (GitHub
+Actions also pings it every 10 minutes as a backup, but isn't punctual enough alone — see "Health
+check / keep-warm" below).
 ```
 
 | Service | Platform | Live URL | Auto-deploys on push? |
@@ -52,14 +53,26 @@ render deploys create srv-da3c908jo6nc73e8er70
 ```
 
 **Health check / keep-warm:** Render's free tier sleeps after 15 minutes idle, and this backend's JVM
-cold start can take 60-90+ seconds. `.github/workflows/keep-backend-warm.yml` pings
-`/api/public/health` every 10 minutes to prevent that for real visitors.
+cold start can take 60-90+ seconds. The primary keep-warm ping is a **cron-job.org** cronjob hitting
+`https://portfolio-backend-68bh.onrender.com/api/public/health` every 5 minutes. That's the mechanism
+that actually matters — see below for why.
+
+`.github/workflows/keep-backend-warm.yml` also pings the same endpoint every 10 minutes and is left
+running as a redundant backup, but it is **not sufficient on its own**: GitHub Actions' `schedule`
+trigger is best-effort, not punctual — a sample of real run timestamps (2026-08-23) showed every single
+gap between "every 10 minute" runs landing 16-22 minutes apart, already past the 15-minute sleep
+threshold. That drift is what was causing the backend to cold-sleep between pings, which surfaced as
+slow/stuck-loading admin API calls and the portfolio site outright failing to load (Vercel's Next.js
+functions have `maxDuration = 60`, shorter than Render's 60-90+ second cold start, so the function gets
+killed mid-request rather than waiting it out). cron-job.org's scheduler is punctual enough that this
+isn't an issue at a 5-minute cadence.
 
 **Why the repo is public:** GitHub Actions bills a minimum of 1 minute per run. A private repo only
 gets 2,000 free minutes/month — a 10-minute ping cadence needs ~4,300 runs/month, which would exceed
 that and silently stop working partway through the month. Public repos get unlimited free Actions
 minutes. The repo was scanned for secrets/credentials before flipping visibility (none found — all
-credentials are env vars, never committed).
+credentials are env vars, never committed). (This reasoning was for the now-backup GitHub Actions
+workflow — it's kept public-repo-compatible regardless since the repo's visibility hasn't changed.)
 
 **Environment variables** (set on the Render service, not in the repo):
 

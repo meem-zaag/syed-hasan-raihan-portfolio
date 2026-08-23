@@ -4,7 +4,13 @@ import type { TokenPairResponse } from '../types/api';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080/api';
 
-export const apiClient = axios.create({ baseURL });
+// The Render backend cold-sleeps after idle and can take 60-90s to wake up.
+// Without a timeout a cold call just hangs forever behind the loading
+// skeleton; this bounds that wait so react-query's onError (see
+// queryClient.ts) can surface a "server is waking up" message instead.
+const REQUEST_TIMEOUT_MS = 15_000;
+
+export const apiClient = axios.create({ baseURL, timeout: REQUEST_TIMEOUT_MS });
 
 apiClient.interceptors.request.use((config) => {
   const token = useAuthStore.getState().accessToken;
@@ -21,7 +27,11 @@ async function performRefresh(): Promise<string> {
   if (!refreshToken) {
     throw new Error('No refresh token available');
   }
-  const response = await axios.post<TokenPairResponse>(`${baseURL}/auth/refresh`, { refreshToken });
+  const response = await axios.post<TokenPairResponse>(
+    `${baseURL}/auth/refresh`,
+    { refreshToken },
+    { timeout: REQUEST_TIMEOUT_MS },
+  );
   const { accessToken, refreshToken: newRefreshToken, user } = response.data;
   useAuthStore.getState().setSession(accessToken, newRefreshToken, user);
   return accessToken;
