@@ -4,9 +4,27 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink, Calendar, Briefcase } from "lucide-react";
 import { GithubIcon } from "@/components/icons/BrandIcons";
-import { getProject } from "@/lib/api";
+import { getProject, getProjects } from "@/lib/api";
 import { sanitizeRichText } from "@/lib/sanitize";
 import { Reveal } from "@/components/Reveal";
+
+// A dynamic segment with no generateStaticParams renders fully live on every visit
+// (confirmed via Vercel logs: repeat hits kept showing λ, never cached ◇, unlike every
+// other route) — it skips the stale-while-revalidate cushion the rest of the site gets
+// and blocks directly on the backend, so a cold Render/Neon makes this specific page hang
+// instead of serving cached content while revalidating. generateStaticParams pre-renders
+// known slugs at build time; any slug added later (dynamicParams defaults to true) still
+// renders on first visit and is then cached the same way.
+export async function generateStaticParams() {
+  try {
+    const projects = await getProjects();
+    return projects.map((p) => ({ slug: p.slug }));
+  } catch {
+    return [];
+  }
+}
+
+export const revalidate = 60;
 
 async function loadProject(slug: string) {
   try {
