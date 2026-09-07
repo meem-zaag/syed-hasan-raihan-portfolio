@@ -130,6 +130,7 @@ export default function PagesSectionsPage() {
       {selectedPageId && (
         <SectionFormDrawer
           pageId={selectedPageId}
+          pageSlug={selectedPage?.slug}
           open={drawerOpen}
           section={editingSection}
           onClose={() => setDrawerOpen(false)}

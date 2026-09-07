@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import { ConfirmDeleteButton } from '../../components/common/ConfirmDeleteButton';
 import { EmptyState } from '../../components/common/EmptyState';
 import { PageHeaderBar } from '../../components/common/PageHeaderBar';
-import { useDeleteProject, useProjectsQuery } from '../../hooks/useProjects';
+import { useDeleteProject, useProjectQuery, useProjectsQuery } from '../../hooks/useProjects';
 import type { ProjectResponse } from '../../types/api';
 import { ProjectFormDrawer } from './ProjectFormDrawer';
 
@@ -29,7 +29,14 @@ export default function ProjectsPage() {
     [data],
   );
 
-  const editingProject = rows.find((p) => p.id === editingProjectId) ?? null;
+  const editingProjectInView = rows.find((p) => p.id === editingProjectId) ?? null;
+  // A just-created project can land outside the current page/search filter (e.g. new
+  // projects are appended to the end of the order), so fall back to fetching it directly
+  // by id rather than leaving the drawer stuck unable to resolve it.
+  const { data: editingProjectFetched } = useProjectQuery(
+    editingProjectId != null && !editingProjectInView ? editingProjectId : undefined,
+  );
+  const editingProject = editingProjectInView ?? editingProjectFetched ?? null;
 
   const openCreate = () => {
     setEditingProjectId(null);
@@ -150,7 +157,12 @@ export default function ProjectsPage() {
         />
       )}
 
-      <ProjectFormDrawer open={drawerOpen} project={editingProject} onClose={() => setDrawerOpen(false)} />
+      <ProjectFormDrawer
+        open={drawerOpen}
+        project={editingProject}
+        onClose={() => setDrawerOpen(false)}
+        onCreated={(id) => setEditingProjectId(id)}
+      />
     </div>
   );
 }

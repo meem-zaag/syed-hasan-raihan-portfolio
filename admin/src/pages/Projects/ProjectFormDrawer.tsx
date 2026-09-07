@@ -11,6 +11,7 @@ interface ProjectFormDrawerProps {
   open: boolean;
   project: ProjectResponse | null;
   onClose: () => void;
+  onCreated?: (id: number) => void;
 }
 
 interface FormValues extends Omit<ProjectRequest, 'startDate' | 'endDate'> {
@@ -19,7 +20,7 @@ interface FormValues extends Omit<ProjectRequest, 'startDate' | 'endDate'> {
   ongoing?: boolean;
 }
 
-export function ProjectFormDrawer({ open, project, onClose }: ProjectFormDrawerProps) {
+export function ProjectFormDrawer({ open, project, onClose, onCreated }: ProjectFormDrawerProps) {
   const [form] = Form.useForm<FormValues>();
   const createMutation = useCreateProject();
   const updateMutation = useUpdateProject();
@@ -44,6 +45,7 @@ export function ProjectFormDrawer({ open, project, onClose }: ProjectFormDrawerP
               repoUrl: project.repoUrl ?? undefined,
               liveUrl: project.liveUrl ?? undefined,
               featured: project.featured,
+              orderIndex: project.orderIndex,
               techStack: project.techStack,
               startDate: project.startDate ? dayjs(project.startDate) : undefined,
               endDate: project.endDate ? dayjs(project.endDate) : undefined,
@@ -66,7 +68,10 @@ export function ProjectFormDrawer({ open, project, onClose }: ProjectFormDrawerP
     if (project) {
       updateMutation.mutate({ id: project.id, payload }, { onSuccess: onClose });
     } else {
-      createMutation.mutate(payload, { onSuccess: onClose });
+      // Stay open and switch into edit mode for the new project (rather than closing) so
+      // the Gallery section below — which needs a persisted project id to attach images to
+      // — appears immediately instead of requiring a second "reopen and edit" trip.
+      createMutation.mutate(payload, { onSuccess: (created) => onCreated?.(created.id) });
     }
   };
 
@@ -168,6 +173,13 @@ export function ProjectFormDrawer({ open, project, onClose }: ProjectFormDrawerP
           <Select mode="tags" placeholder="Add technologies and press enter" tokenSeparators={[',']} />
         </Form.Item>
       </Form>
+
+      {!project && (
+        <div className="mt-4">
+          <p className="mb-2 text-sm font-medium text-gray-700">Gallery</p>
+          <p className="text-sm text-gray-400">Save the project first — you&apos;ll be able to add images right after.</p>
+        </div>
+      )}
 
       {project && (
         <div className="mt-4">

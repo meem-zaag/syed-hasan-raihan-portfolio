@@ -1,4 +1,4 @@
-import { Button, Drawer, Form, Input, Select, Space, Switch } from 'antd';
+import { AutoComplete, Button, Drawer, Form, Input, Select, Space, Switch } from 'antd';
 import { useEffect } from 'react';
 import { mediaApi } from '../../api/mediaApi';
 import { GalleryUploader } from '../../components/common/GalleryUploader';
@@ -13,14 +13,25 @@ import type { SectionRequest, SectionResponse } from '../../types/api';
 
 const SECTION_TYPES = ['HERO', 'CTA', 'GALLERY', 'GENERIC'];
 
+// Keys the portfolio site's rendering code actually looks up via findSection(), by page
+// slug — see portfolio/src/app/page.tsx ("hero") and portfolio/src/app/about/page.tsx
+// ("intro"). A section with any other key (or on any other page) is saved and shows as
+// "active" here, but the portfolio site has no code path that renders it — sectionType
+// below is just a display label and doesn't change that.
+const RENDERED_SECTION_KEYS: Record<string, string[]> = {
+  home: ['hero'],
+  about: ['intro'],
+};
+
 interface SectionFormDrawerProps {
   pageId: number;
+  pageSlug?: string;
   open: boolean;
   section: SectionResponse | null;
   onClose: () => void;
 }
 
-export function SectionFormDrawer({ pageId, open, section, onClose }: SectionFormDrawerProps) {
+export function SectionFormDrawer({ pageId, pageSlug, open, section, onClose }: SectionFormDrawerProps) {
   const [form] = Form.useForm<SectionRequest>();
   const createMutation = useCreateSection(pageId);
   const updateMutation = useUpdateSection(pageId);
@@ -45,6 +56,8 @@ export function SectionFormDrawer({ pageId, open, section, onClose }: SectionFor
   }, [open, section, form]);
 
   const isSaving = createMutation.isPending || updateMutation.isPending;
+  const knownKeys = pageSlug ? RENDERED_SECTION_KEYS[pageSlug] ?? [] : [];
+  const sectionKeyValue = Form.useWatch('sectionKey', form);
 
   const handleFinish = (values: SectionRequest) => {
     if (section) {
@@ -77,12 +90,26 @@ export function SectionFormDrawer({ pageId, open, section, onClose }: SectionFor
         <Form.Item
           name="sectionKey"
           label="Section key"
-          extra="A stable identifier for this section (e.g. hero, intro, cta) — used by the site to find it."
+          extra={
+            knownKeys.length > 0
+              ? `The portfolio site currently renders this page from key ${knownKeys.map((k) => `"${k}"`).join(', ')} — any other key is saved but won't appear anywhere yet.`
+              : "A stable identifier for this section (e.g. hero, intro, cta) — used by the site to find it. This page has no section key wired up in the portfolio site's code yet, so a section here won't appear on the live site regardless of key."
+          }
           rules={[{ required: true, message: 'Section key is required' }]}
         >
-          <Input placeholder="hero" disabled={Boolean(section)} />
+          <AutoComplete options={knownKeys.map((k) => ({ value: k }))} placeholder="hero" />
         </Form.Item>
-        <Form.Item name="sectionType" label="Section type">
+        {knownKeys.length > 0 && sectionKeyValue && !knownKeys.includes(sectionKeyValue) && (
+          <p className="-mt-3 mb-4 text-sm text-amber-600">
+            Warning: &quot;{sectionKeyValue}&quot; won&apos;t render on the site — this page only displays key{knownKeys.length > 1 ? 's' : ''}{' '}
+            {knownKeys.map((k) => `"${k}"`).join(', ')}.
+          </p>
+        )}
+        <Form.Item
+          name="sectionType"
+          label="Section type"
+          extra="Display label only, shown in this list — it does not affect what renders on the site. The Section key above is what the site actually looks up."
+        >
           <Select options={SECTION_TYPES.map((t) => ({ value: t, label: t }))} />
         </Form.Item>
         <Form.Item name="heading" label="Heading">
