@@ -167,6 +167,13 @@
   /* Structural spacing/typography for admin-authored rich text (Quill HTML)
      rendered via dangerouslySetInnerHTML - color/size come from whatever
      text-* classes the call site adds alongside this one. */
+  .rich-text {
+    /* Quill sometimes saves runs of &nbsp; in place of regular spaces (e.g.
+       after certain paste sources), which makes a whole sentence one
+       unbreakable token and blows out the container - inherited so it also
+       catches long pasted URLs inside .rich-text a. */
+    overflow-wrap: anywhere;
+  }
   .rich-text > * + * {
     margin-top: 1em;
   }
